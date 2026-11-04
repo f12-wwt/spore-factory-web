@@ -3,6 +3,7 @@ import { DataStore } from '../systems/DataStore';
 import { Run } from '../systems/RunState';
 import { Analytics } from '../systems/AnalyticsSystem';
 import { SaveSystem } from '../systems/SaveSystem';
+import { esc } from '../core/escape';
 
 /** 菜单/死亡/通关/纪元过场（GDD T15 UI） */
 export const Screens = {
@@ -62,10 +63,10 @@ export const Screens = {
       ['体积峰值', String(Math.round(Run.maxVolume))],
     ];
     document.getElementById('death-stats')!.innerHTML =
-      stats.map(([k, v]) => `<div class="k">${k}</div><div>${v}</div>`).join('');
+      stats.map(([k, v]) => `<div class="k">${esc(k)}</div><div>${esc(v)}</div>`).join('');
     document.getElementById('death-analytics')!.innerHTML =
       '<div class="k" style="grid-column:1/3;margin-top:6px">—— 验证指标（GDD 文件 8）——</div>' +
-      Analytics.summary(G).map(({ label, value }) => `<div class="k">${label}</div><div>${value}</div>`).join('');
+      Analytics.summary(G).map(({ label, value }) => `<div class="k">${esc(label)}</div><div>${esc(value)}</div>`).join('');
     document.getElementById('hud')!.classList.add('hidden');
     document.getElementById('death')!.classList.remove('hidden');
   },
@@ -110,7 +111,7 @@ export const Screens = {
       `${totalScore} <small>分</small>`;
     document.getElementById('victory-breakdown')!.innerHTML =
       scoreParts.map(([k, v]) =>
-        `<div class="k">${k}</div><div style="color:${v >= 0 ? 'var(--good)' : 'var(--warn)'}">${v >= 0 ? '+' : ''}${v}</div>`
+        `<div class="k">${esc(k)}</div><div style="color:${v >= 0 ? 'var(--good)' : 'var(--warn)'}">${v >= 0 ? '+' : ''}${esc(v)}</div>`
       ).join('');
     document.getElementById('victory-stats')!.innerHTML = [
       ['存活时长', `${Math.round(Run.survivedS)}s`],
@@ -119,7 +120,7 @@ export const Screens = {
       ['体积峰值', String(Math.round(Run.maxVolume))],
       ['血统代数', `第 ${save.generation} 代`],
       ['遗传记忆', `${save.memories.length} 种`],
-    ].map(([k, v]) => `<div class="k">${k}</div><div>${v}</div>`).join('');
+    ].map(([k, v]) => `<div class="k">${esc(k)}</div><div>${esc(v)}</div>`).join('');
     document.getElementById('hud')!.classList.add('hidden');
     document.getElementById('victory')!.classList.remove('hidden');
   },

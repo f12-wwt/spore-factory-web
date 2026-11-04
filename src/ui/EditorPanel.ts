@@ -11,6 +11,7 @@ import { CONST, upgradeSpentOf, upgradeCostOf } from '../systems/RunState';
 import { Analytics } from '../systems/AnalyticsSystem';
 import { Ev, bus } from '../core/EventBus';
 import { pointSegDist, seededRand } from '../core/MathUtils';
+import { esc } from '../core/escape';
 
 /**
  * 生物编辑器（GDD 3.3 / T7/T8）：
@@ -297,7 +298,7 @@ export const Editor = {
       const rmBtn = m.builtIn
         ? `<span class="rm innate" title="先天器官：无法卸载">🧬</span>`
         : `<span class="rm" data-rm="${id}" title="卸载（返还 30% 购置 + 80% 强化投入）">✕</span>`;
-      return `<span class="mod-chip${sel}${shadow}" data-sel="${id}"${shadowTip}><span class="p-ico">${iconOf(id)}</span>${m.name}${n > 1 ? ` ×${n}` : ''}${lvBadge}${upBtn}${rmBtn}</span>`;
+      return `<span class="mod-chip${sel}${shadow}" data-sel="${esc(id)}"${shadowTip}><span class="p-ico">${iconOf(id)}</span>${esc(m.name)}${n > 1 ? ` ×${n}` : ''}${lvBadge}${upBtn}${rmBtn}</span>`;
     }).join('');
     inst.innerHTML = `<span class="lib-title">已安装（点选看属性）：</span>${chips || '（基础形态）'}`;
 
@@ -326,7 +327,7 @@ export const Editor = {
       const nT = counts.get(tid) || 0;
       
       // 地形模块：不显示强化按钮，只展示卸载按钮
-      terrHtml += `<span class="mod-chip" data-sel="${tid}"><span class="p-ico">${iconOf(tid)}</span>${tmDef ? tmDef.name : '???'}${nT > 1 ? ` ×${nT}` : ''}<span class="rm terr" data-rm="${tid}" title="卸载">✕</span></span>`;
+      terrHtml += `<span class="mod-chip" data-sel="${esc(tid)}"><span class="p-ico">${iconOf(tid)}</span>${esc(tmDef ? tmDef.name : '???')}${nT > 1 ? ` ×${nT}` : ''}<span class="rm terr" data-rm="${esc(tid)}" title="卸载">✕</span></span>`;
     }
     
     // 如果没有任何已安装地形，只显示添加按钮
@@ -365,8 +366,8 @@ export const Editor = {
       const isCurrent = eo === G.eraIndex;
       const unlocked = isCurrent || (eo === G.eraIndex + 1 && G.evoSession);
       const title = unlocked
-        ? `${era.name}组件${isCurrent ? '' : ' 🎯 进化会话解锁'}`
-        : `${era.name}组件 🔒`;
+        ? `${esc(era.name)}组件${isCurrent ? '' : ' 🎯 进化会话解锁'}`
+        : `${esc(era.name)}组件 🔒`;
       const cells = DataStore.modules.filter(m => m.era === eo).map(m => {
         if (!unlocked) {
           return `<div class="lib-part unknown locked" data-future="1" title="???：达成里程碑并完成关键进化后解锁">` +
@@ -382,11 +383,11 @@ export const Editor = {
           m.desc,
           m.builtIn ? '天生自带，无法购买/卸载' : `⬢${m.growthCost} 生长储备`,
         ].join('\n');
-        return `<div class="lib-part${sel}${lock}${m.builtIn ? ' innate' : ''}" data-id="${m.id}" title="${esc(tip)}">` +
+        return `<div class="lib-part${sel}${lock}${m.builtIn ? ' innate' : ''}" data-id="${esc(m.id)}" title="${esc(tip)}">` +
           `<span class="p-icon">${iconOf(m.id)}</span>` +
-          `<span class="p-name">${m.name}${m.keyTo ? '🎯' : ''}${m.builtIn ? '🧬' : (memOk ? '' : '🔒')}</span></div>`;
+          `<span class="p-name">${esc(m.name)}${m.keyTo ? '🎯' : ''}${m.builtIn ? '🧬' : (memOk ? '' : '🔒')}</span></div>`;
       }).join('');
-      sections.push(`<div class="lib-section"><div class="lib-title">${title}</div><div class="lib-grid parts">${cells}</div></div>`);
+      sections.push(`<div class="lib-section"><div class="lib-title">${esc(title)}</div><div class="lib-grid parts">${cells}</div></div>`);
     }
     lib.innerHTML = sections.join('');
     lib.querySelectorAll('[data-id]').forEach(el => {
@@ -464,7 +465,7 @@ export const Editor = {
         const diff = Math.abs(pv - sv);
         delta = `<span class="s-d ${up ? 'up' : 'down'}">${up ? '▲' : '▼'}${diff >= 10 ? Math.round(diff) : diff.toFixed(1)}</span>`;
       }
-      return `<div class="stat-row"><span class="s-k">${k}</span><span class="s-v"><b>${v}</b>${delta}</span></div>`;
+      return `<div class="stat-row"><span class="s-k">${esc(k)}</span><span class="s-v"><b>${esc(v)}</b>${delta}</span></div>`;
     }).join('');
     const volRow = `<div class="stat-row"><span class="s-k">体积 / 上限</span><span class="s-v"><b>${vol}/${cap}</b>` +
       `${P.maxVolumeBonus > 0 ? `<span class="s-d up">强化+${P.maxVolumeBonus}</span>` : ''}</span></div>`;
@@ -538,13 +539,13 @@ export const Editor = {
         : `<button class="primary" data-cd-add>＋ 安装 ⬳${m.growthCost}</button>`);
 
     el.innerHTML = `
-      <div class="cd-head">${iconOf(id)} ${m.name}${m.builtIn ? ' <span class="cd-innate">🧬 先天</span>' : ''}
+      <div class="cd-head">${iconOf(id)} ${esc(m.name)}${m.builtIn ? ' <span class="cd-innate">🧬 先天</span>' : ''}
         <span class="cd-lv">${installed ? `已安装 ×${count}${lv > 1 ? ` · Lv${lv}` : ''}` : '未安装'}</span></div>
-      <div class="cd-cat">${CATEGORY_NAME[m.category] ?? m.category} · ${DataStore.era(m.era).name}${m.keyTo ? ' · 🎯 关键进化组件' : ''}${m.node ? ` · 物流：${LAYER_CN[Logistics.layerOf({ layer: m.node.layer, type: m.node.type })]}` : ''}</div>
+      <div class="cd-cat">${esc(CATEGORY_NAME[m.category] ?? m.category)} · ${esc(DataStore.era(m.era).name)}${m.keyTo ? ' · 🎯 关键进化组件' : ''}${m.node ? ` · 物流：${LAYER_CN[Logistics.layerOf({ layer: m.node.layer, type: m.node.type })]}` : ''}</div>
       ${m.slot ? `<div class="cd-chain">${this.chainHtml(m.slot, id)}</div>` : '<div class="cd-chain none">可叠加件（不占功能槽位）</div>'}
-      <div class="cd-stats">${stats.join(' · ')} · ${m.builtIn ? '天生自带' : `⬳${m.growthCost} 购置`}</div>
+      <div class="cd-stats">${esc(stats.join(' · '))} · ${m.builtIn ? '天生自带' : `⬳${m.growthCost} 购置`}</div>
       <div class="cd-desc">${esc(m.desc)}</div>
-      ${locks.map(t => `<div class="cd-lock">${t}</div>`).join('')}
+      ${locks.map(t => `<div class="cd-lock">${esc(t)}</div>`).join('')}
       <div class="cd-actions">${actions}</div>`;
 
     el.querySelector('[data-cd-add]')?.addEventListener('click', () => this.installOne(id));
@@ -1158,7 +1159,7 @@ addTerraModule(id: string): void {
       `${metaUpNow > 0 ? `<b> (强化+${Math.round(metaUpNow * 100)}%)</b>` : ''}` +
       ` · 运动实现 <b>${Math.round(svc.muscleReal * 100)}%</b>` +
       ` · 脑供能 <b>${Math.round(svc.brainEff * 100)}%</b>` +
-      (bn ? ` · <span style="color:#ff9f43">瓶颈 ${nb(bn.a)}—${nb(bn.b)}</span>` : '') +
+      (bn ? ` · <span style="color:#ff9f43">瓶颈 ${esc(nb(bn.a))}—${esc(nb(bn.b))}</span>` : '') +
       `</div><div class="ns-foot dim">线宽 = 吞吐等级 · 亮点 = 物流流动 · 悬停/点选管线或节点查看、扩容、拆除</div>`;
     this.renderHead();
     this.drawNetwork(this.netTime);
@@ -1746,10 +1747,7 @@ const CATEGORY_NAME: Record<string, string> = {
   movement: '移动', sense: '感官', defense: '防御', head: '神经',
 };
 
-/** HTML 属性转义（tooltip/title 用） */
-function esc(s: string): string {
-  return s.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
-}
+/** zhNodeName 等函数沿用 core/escape.ts 中的统一 esc()，避免多处实现不一致 */
 
 function zhNodeName(n: { id: string; moduleId?: string }): string {
   const base: Record<string, string> = { stomach: '胃', energy: '能量池', muscle: '肌肉', brain: '大脑' };

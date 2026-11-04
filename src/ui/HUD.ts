@@ -4,6 +4,7 @@ import { Ev, bus } from '../core/EventBus';
 import { fmtTime } from '../core/MathUtils';
 import { CombatDepth } from '../systems/CombatDepth';
 import { SKILLS } from '../types/Combat';
+import { esc } from '../core/escape';
 
 /** HUD（GDD UI/HUD / T15）：纪元、时钟、代数、三条资源条、代谢压力表、灾害横幅 */
 export const HUD = {
@@ -87,9 +88,9 @@ export const HUD = {
       div.className = `skill-slot ${can.ok ? 'ready' : cd > 0 ? 'cooling' : 'locked'}`;
       const cost = s.energyCost > 0 ? `能量${s.energyCost}` : s.burstCost > 0 ? `爆发${s.burstCost}` : '免费';
       div.innerHTML = `
-        <span class="sk-key">${s.key}</span>
-        <span class="sk-name" title="${s.desc}">${s.name}</span>
-        <span class="sk-cost">${cost}</span>
+        <span class="sk-key">${esc(s.key)}</span>
+        <span class="sk-name" title="${esc(s.desc)}">${esc(s.name)}</span>
+        <span class="sk-cost">${esc(cost)}</span>
         ${cd > 0 ? `<div class="sk-cd">${cd.toFixed(1)}s</div>` : ''}
       `;
       skillBar.appendChild(div);
@@ -123,7 +124,7 @@ export const HUD = {
         }
         const synergies = CombatDepth.synergies(G);
         synergyDiv.innerHTML = synergies.length > 0
-          ? `🔗 ${synergies.join(' · ')}`
+          ? `🔗 ${esc(synergies.join(' · '))}`
           : '🔗 暂无协同加成（同类别装备 ≥2 件器官可触发）';
       }
     }

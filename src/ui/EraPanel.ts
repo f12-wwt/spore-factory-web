@@ -1,6 +1,7 @@
 import type { GameState } from '../types/GameState';
 import { DataStore } from '../systems/DataStore';
 import { Ev, bus } from '../core/EventBus';
+import { esc } from '../core/escape';
 
 /** 纪元目标面板（GDD 3.7 / T15）：里程碑清单 + 过渡事件 + 继承预告 */
 export const EraPanel = {
@@ -20,14 +21,14 @@ export const EraPanel = {
       const done = G.milestoneDone[i];
       return `<div class="ms ${done ? 'done' : ''}">
         <span class="dot">${done ? '✅' : '⬜'}</span>
-        <span class="ms-desc">${m.desc}</span>
+        <span class="ms-desc">${esc(m.desc)}</span>
       </div>`;
     }).join('');
     const key = era.keyModule
-      ? `<div class="ms"><span class="dot">🎯</span><span class="ms-desc">关键进化：安装【${DataStore.module(era.keyModule).name}】并保存 → ${DataStore.era(G.eraIndex + 1)?.name ?? '终局'}</span></div>`
-      : `<div class="ms"><span class="dot">🎯</span><span class="ms-desc">过渡条件：${era.transitionEvent}</span></div>`;
+      ? `<div class="ms"><span class="dot">🎯</span><span class="ms-desc">关键进化：安装【${esc(DataStore.module(era.keyModule).name)}】并保存 → ${esc(DataStore.era(G.eraIndex + 1)?.name ?? '终局')}</span></div>`
+      : `<div class="ms"><span class="dot">🎯</span><span class="ms-desc">过渡条件：${esc(era.transitionEvent)}</span></div>`;
     body.innerHTML = `
-      <h3>${era.name} · ${era.en}</h3>
+      <h3>${esc(era.name)} · ${esc(era.en)}</h3>
       ${rows}${key}
       <div class="inherit-note">纪元过渡继承（GDD 3.6）：记忆 100% · 物流网络 80% · 体积 60% · 生长储备 50%。</div>`;
     document.getElementById('era-panel')!.classList.remove('hidden');

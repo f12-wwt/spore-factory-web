@@ -238,6 +238,9 @@ export function newRun(inheritedMemoryIds: string[] = [], generation = 0): GameS
   // 血统记忆 60% 继承（GDD 3.6 繁殖行 / 血统延续）
   const inherited = inheritedMemoryIds.slice(0, Math.ceil(inheritedMemoryIds.length * CONST.MEMORY_INHERIT));
   for (const sid of inherited) {
+    // 纵深防御：即使存档被第三方写入（GitHub Pages 同源页面可共享 localStorage），
+    // 未知 id 也只跳过，不让 DataStore.species() 抛错打断启动流程。
+    if (!DataStore.speciesList.some(s => s.id === sid)) continue;
     st.memories.set(sid, { ...DataStore.memoryOf(sid), unlocked: true, interactionCount: 1 });
   }
   st.player.generation = generation;

@@ -1,6 +1,7 @@
 import type { GameState } from '../types/GameState';
 import { DataStore } from '../systems/DataStore';
 import { Ev, bus } from '../core/EventBus';
+import { esc } from '../core/escape';
 
 /** 记忆库面板（GDD 3.5 / T5）：??? → 交互解锁 */
 export const MemoryPanel = {
@@ -23,16 +24,16 @@ export const MemoryPanel = {
       if (!m?.unlocked) {
         return `<div class="mem-card unknown">
           <div class="m-name">？？？</div>
-          <div class="m-line">首次接触于 ${def.era <= G.eraIndex ? DataStore.era(def.era).name : '未知'}水域</div>
+          <div class="m-line">首次接触于 ${esc(def.era <= G.eraIndex ? DataStore.era(def.era).name : '未知')}水域</div>
           <div class="m-line">进食 / 攻击 / 观察后解锁</div>
         </div>`;
       }
       const danger = m.dangerLevel >= 6 ? 'danger-high' : m.dangerLevel >= 3 ? 'danger-mid' : 'danger-low';
       return `<div class="mem-card">
-        <div class="m-name">${m.name}</div>
-        <div class="m-line">类型：${typeName(def.type)} · 营养 ${m.nutrition}</div>
-        <div class="m-line">危险等级：<span class="${danger}">${m.dangerLevel}/10</span></div>
-        <div class="m-line">首次记录：${m.firstEra} · 互动 ${m.interactionCount} 次</div>
+        <div class="m-name">${esc(m.name)}</div>
+        <div class="m-line">类型：${esc(typeName(def.type))} · 营养 ${esc(m.nutrition)}</div>
+        <div class="m-line">危险等级：<span class="${danger}">${esc(m.dangerLevel)}/10</span></div>
+        <div class="m-line">首次记录：${esc(m.firstEra)} · 互动 ${esc(m.interactionCount)} 次</div>
       </div>`;
     }).join('');
     document.getElementById('memory')!.classList.remove('hidden');

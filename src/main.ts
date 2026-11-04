@@ -20,6 +20,7 @@ import { EraPanel } from './ui/EraPanel';
 import { Screens } from './ui/Screens';
 import { Setup } from './ui/Setup';
 import { SenseOverlay } from './ui/SenseOverlay';
+import { esc } from './core/escape';
 
 /**
  * Phaser 延迟装配（代码分包）：
@@ -108,8 +109,8 @@ function boot(): void {
   bus.on(Ev.TASTE_CARD, def => {
     const card = document.getElementById('taste-card')!;
     const danger = def.dangerLevel >= 6 ? '高危' : def.dangerLevel >= 3 ? '有风险' : '安全';
-    card.innerHTML = `<div class="t-name">👅 味觉分析：${def.name}</div>
-      <div class="t-line">营养 ~${def.nutrition} · 危险等级 ${def.dangerLevel}/10（${danger}）</div>
+    card.innerHTML = `<div class="t-name">👅 味觉分析：${esc(def.name)}</div>
+      <div class="t-line">营养 ~${esc(def.nutrition)} · 危险等级 ${esc(def.dangerLevel)}/10（${danger}）</div>
       <div class="t-line">已写入记忆库</div>`;
     card.classList.remove('hidden');
     window.setTimeout(() => card.classList.add('hidden'), 3000);
@@ -157,11 +158,14 @@ function boot(): void {
   // 菜单渲染后空闲预取 Phaser（分包加载，首屏不被引擎阻塞）
   window.setTimeout(() => { void ensurePhaser(); }, 600);
 
-  // 开发/验证桥：供自动化测试与埋点核对（GDD 文件 8）
-  (window as unknown as Record<string, unknown>).SFW = {
-    G, Run, DataStore, SaveSystem, Metab, MemorySys, Stage, GameLoop,
-    DisasterSys, World, Combat, Editor, bus, Ev,
-  };
+  // 开发/验证桥：仅在 Vite 开发服务器下挂载，生产构建会被静态消除。
+  // 暴露到生产环境等于把游戏状态、存档与事件总线交给任意同源脚本（作弊 / 篡改 / 注入面）。
+  if (import.meta.env.DEV) {
+    (window as unknown as Record<string, unknown>).SFW = {
+      G, Run, DataStore, SaveSystem, Metab, MemorySys, Stage, GameLoop,
+      DisasterSys, World, Combat, Editor, bus, Ev,
+    };
+  }
 
   // rAF 停摆/渲染循环死亡兜底：>250ms 无帧时按真实时间分步驱动模拟
   // （覆盖两种情况：后台标签页节流、以及某帧异常杀掉 Phaser 循环后维持可玩）

@@ -1,6 +1,7 @@
 import type { DiffConfig } from '../types/GameState';
 import { DIFF_PRESETS } from '../systems/RunState';
 import { Ev, bus } from '../core/EventBus';
+import { esc } from '../core/escape';
 
 /**
  * 开局设置（初始状态）：难度预设 + 6 项滑杆。
@@ -15,7 +16,7 @@ export const Setup = {
     // 预设按钮
     const btns = document.getElementById('diff-btns')!;
     btns.innerHTML = Object.values(DIFF_PRESETS)
-      .map(p => `<button class="diff-btn ${p.preset === 'normal' ? 'active' : ''}" data-preset="${p.preset}">${p.label}</button>`)
+      .map(p => `<button class="diff-btn ${p.preset === 'normal' ? 'active' : ''}" data-preset="${esc(p.preset)}">${esc(p.label)}</button>`)
       .join('');
     btns.querySelectorAll('[data-preset]').forEach(el => {
       el.addEventListener('click', () => {
