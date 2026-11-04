@@ -1,0 +1,78 @@
+[
+  {
+    "id": "archean",
+    "name": "太古宙",
+    "en": "Archean",
+    "order": 0,
+    "volumeMin": 1,
+    "volumeMax": 14,
+    "speedMin": 0,
+    "speedMax": 2,
+    "durationMinutes": 15,
+    "milestones": [
+      { "type": "survive", "value": 180, "desc": "在本纪元存活 180 秒（游戏内 3 分钟）" },
+      { "type": "energy", "value": 50, "desc": "当前能量达到 50" },
+      { "type": "memoryCount", "value": 3, "desc": "记忆库收录 3 种物质" }
+    ],
+    "transitionEvent": "代谢效率 ≥ 50%（基础物流网成型）",
+    "keyModule": null,
+    "inherit": { "memory": 1.0, "network": 0.8, "volume": 0.6, "growth": 0.5 },
+    "palette": {
+      "bg": "#0b1d24", "bgAlt": "#0f2a33", "food": "#7be07b", "accent": "#39c5cf",
+      "fog": "#020a0e", "player": "#ffd166"
+    },
+    "spawn": { "food": 70, "neutral": 10, "predator": 2 },
+    "disasters": ["hydrothermal_vent"]
+  },
+  {
+    "id": "proterozoic",
+    "name": "元古宙",
+    "en": "Proterozoic",
+    "order": 1,
+    "volumeMin": 6,
+    "volumeMax": 26,
+    "speedMin": 0,
+    "speedMax": 3,
+    "durationMinutes": 15,
+    "milestones": [
+      { "type": "disasterSurvived", "value": 1, "target": "great_oxidation", "desc": "在大氧化事件中幸存（提前装备有氧酶更稳妥）" },
+      { "type": "volume", "value": 20, "desc": "体积达到 20（多细胞化）" },
+      { "type": "module", "value": 1, "target": "photospot", "desc": "安装感光点（获得光感）" },
+      { "type": "foodTypes", "value": 5, "desc": "品尝过 5 种不同食物" }
+    ],
+    "transitionEvent": "多细胞解锁",
+    "keyModule": "multicell_agg",
+    "inherit": { "memory": 1.0, "network": 0.8, "volume": 0.6, "growth": 0.5 },
+    "palette": {
+      "bg": "#0c2620", "bgAlt": "#113329", "food": "#a8e063", "accent": "#56c9a8",
+      "fog": "#020c09", "player": "#ffd166"
+    },
+    "spawn": { "food": 60, "neutral": 14, "predator": 4 },
+    "disasters": ["great_oxidation"]
+  },
+  {
+    "id": "cambrian",
+    "name": "寒武纪",
+    "en": "Cambrian",
+    "order": 2,
+    "volumeMin": 14,
+    "volumeMax": 60,
+    "speedMin": 0,
+    "speedMax": 4,
+    "durationMinutes": 15,
+    "milestones": [
+      { "type": "predation", "value": 3, "desc": "捕食 3 种不同生物" },
+      { "type": "module", "value": 1, "target": "compound_eye", "desc": "安装复眼" },
+      { "type": "memoryCount", "value": 10, "desc": "记忆库收录 10 种物质" }
+    ],
+    "transitionEvent": "外骨骼解锁（三纪元闭环完成）",
+    "keyModule": "exoskeleton",
+    "inherit": { "memory": 1.0, "network": 0.8, "volume": 0.6, "growth": 0.5 },
+    "palette": {
+      "bg": "#101c33", "bgAlt": "#16264a", "food": "#8fd3ff", "accent": "#f4a259",
+      "fog": "#04060f", "player": "#ffd166"
+    },
+    "spawn": { "food": 50, "neutral": 18, "predator": 8 },
+    "disasters": ["ocean_acidification"]
+  }
+]

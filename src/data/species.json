@@ -1,0 +1,443 @@
+[
+  {
+    "id": "microbe_food",
+    "name": "微生物群",
+    "type": "food",
+    "era": 0,
+    "nutrition": 10,
+    "dangerLevel": 0,
+    "radius": 7,
+    "hp": 10,
+    "armor": 0,
+    "attack": 0,
+    "speed": 12,
+    "color": "#7be07b",
+    "behavior": {
+      "aggression": 0,
+      "predation": 0,
+      "social": 0.2,
+      "migration": 0.1,
+      "reproduction": 0.3
+    }
+  },
+  {
+    "id": "proto_worm",
+    "name": "原蠕虫",
+    "type": "neutral",
+    "era": 0,
+    "nutrition": 16,
+    "dangerLevel": 1,
+    "radius": 11,
+    "hp": 26,
+    "armor": 2,
+    "attack": 3,
+    "speed": 34,
+    "color": "#c0c8d0",
+    "behavior": {
+      "aggression": 0.1,
+      "predation": 0.15,
+      "social": 0.1,
+      "migration": 0.3,
+      "reproduction": 0.08
+    }
+  },
+  {
+    "id": "vent_stalker",
+    "name": "热泉潜猎者",
+    "type": "predator",
+    "era": 0,
+    "nutrition": 30,
+    "dangerLevel": 6,
+    "radius": 15,
+    "hp": 55,
+    "armor": 4,
+    "attack": 12,
+    "speed": 47,
+    "color": "#ff6b6b",
+    "behavior": {
+      "aggression": 0.7,
+      "predation": 0.6,
+      "social": 0.05,
+      "migration": 0.2,
+      "reproduction": 0.02
+    }
+  },
+  {
+    "id": "algae_mat",
+    "name": "藻团",
+    "type": "food",
+    "era": 1,
+    "nutrition": 14,
+    "dangerLevel": 0,
+    "radius": 10,
+    "hp": 14,
+    "armor": 1,
+    "attack": 0,
+    "speed": 6,
+    "color": "#a8e063",
+    "behavior": {
+      "aggression": 0,
+      "predation": 0,
+      "social": 0.4,
+      "migration": 0.05,
+      "reproduction": 0.4
+    }
+  },
+  {
+    "id": "soft_jelly",
+    "name": "软绵水母",
+    "type": "neutral",
+    "era": 1,
+    "nutrition": 20,
+    "dangerLevel": 2,
+    "radius": 14,
+    "hp": 34,
+    "armor": 3,
+    "attack": 4,
+    "speed": 26,
+    "color": "#d8b4fe",
+    "behavior": {
+      "aggression": 0.1,
+      "predation": 0.1,
+      "social": 0.2,
+      "migration": 0.4,
+      "reproduction": 0.06
+    }
+  },
+  {
+    "id": "disk_hunter",
+    "name": "盘猎者",
+    "type": "predator",
+    "era": 1,
+    "nutrition": 34,
+    "dangerLevel": 7,
+    "radius": 17,
+    "hp": 70,
+    "armor": 6,
+    "attack": 16,
+    "speed": 52,
+    "color": "#ff6b6b",
+    "behavior": {
+      "aggression": 0.75,
+      "predation": 0.7,
+      "social": 0.05,
+      "migration": 0.25,
+      "reproduction": 0.02
+    }
+  },
+  {
+    "id": "plankton_swarm",
+    "name": "浮游生物群",
+    "type": "food",
+    "era": 2,
+    "nutrition": 12,
+    "dangerLevel": 0,
+    "radius": 8,
+    "hp": 10,
+    "armor": 0,
+    "attack": 0,
+    "speed": 16,
+    "color": "#8fd3ff",
+    "behavior": {
+      "aggression": 0,
+      "predation": 0,
+      "social": 0.5,
+      "migration": 0.2,
+      "reproduction": 0.5
+    }
+  },
+  {
+    "id": "trilobite",
+    "name": "三叶虫",
+    "type": "neutral",
+    "era": 2,
+    "nutrition": 24,
+    "dangerLevel": 3,
+    "radius": 15,
+    "hp": 50,
+    "armor": 16,
+    "attack": 6,
+    "speed": 30,
+    "color": "#e9c46a",
+    "behavior": {
+      "aggression": 0.2,
+      "predation": 0.2,
+      "social": 0.15,
+      "migration": 0.3,
+      "reproduction": 0.05
+    }
+  },
+  {
+    "id": "opabinia",
+    "name": "欧巴宾海蝎",
+    "type": "neutral",
+    "era": 2,
+    "nutrition": 26,
+    "dangerLevel": 4,
+    "radius": 14,
+    "hp": 42,
+    "armor": 8,
+    "attack": 7,
+    "speed": 34,
+    "color": "#f4a259",
+    "behavior": {
+      "aggression": 0.25,
+      "predation": 0.2,
+      "social": 0.1,
+      "migration": 0.3,
+      "reproduction": 0.04
+    }
+  },
+  {
+    "id": "anomalocaris",
+    "name": "奇虾",
+    "type": "predator",
+    "era": 2,
+    "nutrition": 40,
+    "dangerLevel": 9,
+    "radius": 20,
+    "hp": 95,
+    "armor": 8,
+    "attack": 22,
+    "speed": 60,
+    "color": "#ff5d5d",
+    "behavior": {
+      "aggression": 0.85,
+      "predation": 0.8,
+      "social": 0.1,
+      "migration": 0.3,
+      "reproduction": 0.02
+    }
+  },
+  {
+    "id": "cyanobacteria",
+    "name": "蓝藻群落",
+    "type": "food",
+    "era": 1,
+    "nutrition": 18,
+    "dangerLevel": 0,
+    "radius": 9,
+    "hp": 12,
+    "armor": 0,
+    "attack": 0,
+    "speed": 5,
+    "color": "#4fc3f7",
+    "behavior": {
+      "aggression": 0.08,
+      "predation": 0.12,
+      "social": 0.6,
+      "migration": 0.5,
+      "reproduction": 0.4
+    }
+  },
+  {
+    "id": "benthic_crab",
+    "name": "深海蟹蛛",
+    "type": "neutral",
+    "era": 2,
+    "nutrition": 28,
+    "dangerLevel": 5,
+    "radius": 13,
+    "hp": 40,
+    "armor": 6,
+    "attack": 8,
+    "speed": 20,
+    "color": "#ffe0b2",
+    "behavior": {
+      "aggression": 0.25,
+      "predation": 0.15,
+      "social": 0.3,
+      "migration": 0.4,
+      "reproduction": 0.06
+    }
+  },
+  {
+    "id": "benthic_crawler",
+    "name": "深海爬虫者",
+    "type": "predator",
+    "era": 2,
+    "nutrition": 38,
+    "dangerLevel": 8,
+    "radius": 16,
+    "hp": 70,
+    "armor": 10,
+    "attack": 24,
+    "speed": 50,
+    "color": "#90caf9",
+    "behavior": {
+      "aggression": 0.65,
+      "predation": 0.7,
+      "social": 0.1,
+      "migration": 0.35,
+      "reproduction": 0.02
+    }
+  },
+  {
+    "id": "sulfur_mite",
+    "name": "硫螨群落",
+    "type": "food",
+    "era": 1,
+    "nutrition": 8,
+    "dangerLevel": 3,
+    "radius": 4,
+    "hp": 6,
+    "armor": 0,
+    "attack": 0,
+    "speed": 15,
+    "color": "#ff7043",
+    "behavior": {
+      "aggression": 0.2,
+      "predation": 0.08,
+      "social": 0.15,
+      "migration": 0.6,
+      "reproduction": 0.3
+    }
+  },
+  {
+    "id": "coral_forest",
+    "name": "珊瑚丛生群落",
+    "type": "food",
+    "era": 2,
+    "nutrition": 16,
+    "dangerLevel": 0,
+    "radius": 8,
+    "hp": 14,
+    "armor": 0,
+    "attack": 0,
+    "speed": 0,
+    "color": "#ff7043",
+    "behavior": {
+      "aggression": 0.25,
+      "predation": 0.18,
+      "social": 0.9,
+      "migration": 0.2,
+      "reproduction": 0.45
+    }
+  },
+  {
+    "id": "urchin_clusters",
+    "name": "海胆群落",
+    "type": "food",
+    "era": 1,
+    "nutrition": 20,
+    "dangerLevel": 6,
+    "radius": 9,
+    "hp": 35,
+    "armor": 8,
+    "attack": 4,
+    "speed": 10,
+    "color": "#b0a8e0",
+    "behavior": {
+      "aggression": 0.6,
+      "predation": 0.25,
+      "social": 0.35,
+      "migration": 0.45,
+      "reproduction": 0.15
+    }
+  },
+  {
+    "id": "kelp_tangle",
+    "name": "海藻丛生群落",
+    "type": "food",
+    "era": 2,
+    "nutrition": 24,
+    "dangerLevel": 0,
+    "radius": 10,
+    "hp": 16,
+    "armor": 0,
+    "attack": 0,
+    "speed": 0,
+    "color": "#81c784",
+    "behavior": {
+      "aggression": 0.35,
+      "predation": 0.2,
+      "social": 0.7,
+      "migration": 0.6,
+      "reproduction": 0.35
+    }
+  },
+  {
+    "id": "vent_anemone",
+    "name": "热泉水母群落",
+    "type": "predator",
+    "era": 1,
+    "nutrition": 32,
+    "dangerLevel": 7,
+    "radius": 8,
+    "hp": 45,
+    "armor": 6,
+    "attack": 10,
+    "speed": 12,
+    "color": "#ff9a00",
+    "behavior": {
+      "aggression": 0.55,
+      "predation": 0.7,
+      "social": 0.4,
+      "migration": 0.3,
+      "reproduction": 0.12
+    }
+  },
+  {
+    "id": "abyssal_jelly",
+    "name": "深海水母群落",
+    "type": "predator",
+    "era": 2,
+    "nutrition": 35,
+    "dangerLevel": 9,
+    "radius": 6,
+    "hp": 30,
+    "armor": 4,
+    "attack": 18,
+    "speed": 0,
+    "color": "#7e57c2",
+    "behavior": {
+      "aggression": 0.8,
+      "predation": 0.6,
+      "social": 0.3,
+      "migration": 0.4,
+      "reproduction": 0.1
+    }
+  },
+  {
+    "id": "sea_urchin",
+    "name": "海胆群落",
+    "type": "food",
+    "era": 2,
+    "nutrition": 18,
+    "dangerLevel": 5,
+    "radius": 9,
+    "hp": 30,
+    "armor": 7,
+    "attack": 4,
+    "speed": 12,
+    "color": "#b0a8e0",
+    "behavior": {
+      "aggression": 0.65,
+      "predation": 0.3,
+      "social": 0.4,
+      "migration": 0.5,
+      "reproduction": 0.12
+    }
+  },
+  {
+    "id": "vent_mushroom",
+    "name": "热泉蘑菇群落",
+    "type": "food",
+    "era": 1,
+    "nutrition": 20,
+    "dangerLevel": 7,
+    "radius": 8,
+    "hp": 35,
+    "armor": 6,
+    "attack": 4,
+    "speed": 0,
+    "color": "#ff7043",
+    "behavior": {
+      "aggression": 0.25,
+      "predation": 0.1,
+      "social": 0.6,
+      "migration": 0.3,
+      "reproduction": 0.2
+    }
+  }
+]

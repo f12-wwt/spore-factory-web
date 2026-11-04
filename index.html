@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>孢子工厂冒险 · 网页验证版</title>
+  <link rel="stylesheet" href="/src/ui/style.css" />
+</head>
+<body>
+  <div id="app">
+    <div id="game-root"></div>
+    <canvas id="sense-overlay"></canvas>
+
+    <!-- HUD -->
+    <div id="hud" class="hidden">
+      <div id="hud-top">
+        <div id="hud-era">太古宙 · Archean</div>
+        <div id="hud-clock">⏱ 0:00</div>
+        <div id="hud-gen">第 0 代</div>
+        <div class="hud-spacer"></div>
+        <button id="btn-editor" title="生物编辑器 (Tab)">🧬 编辑</button>
+        <button id="btn-memory">🧠 记忆</button>
+        <button id="btn-era">🎯 目标</button>
+        <button id="btn-pause">⏸</button>
+      </div>
+      <div id="hud-bars">
+        <div class="bar"><span class="bar-label">生命</span>
+          <div class="bar-track"><div id="bar-hp" class="bar-fill hp"></div></div>
+          <span id="val-hp" class="bar-val"></span></div>
+        <div class="bar"><span class="bar-label">能量</span>
+          <div class="bar-track"><div id="bar-energy" class="bar-fill energy"></div></div>
+          <span id="val-energy" class="bar-val"></span></div>
+        <div class="bar"><span class="bar-label">爆发</span>
+          <div class="bar-track"><div id="bar-burst" class="bar-fill burst"></div></div>
+          <span id="val-burst" class="bar-val"></span></div>
+        <div class="bar"><span class="bar-label">储备</span>
+          <div class="bar-track"><div id="bar-growth" class="bar-fill growth"></div></div>
+          <span id="val-growth" class="bar-val"></span></div>
+        <div id="pressure" class="p-ok" title="代谢压力 = 常驻负荷 / 代谢产出">代谢压力 0%</div>
+        <div id="hud-env" class="hidden" style="font-size:12px;color:var(--accent);margin-top:4px;"></div>
+        <div id="skill-bar"></div>
+        <div id="hud-status"></div>
+      </div>
+      <div id="disaster-banner" class="hidden"></div>
+      <div id="era-goal" class="hidden"></div>
+    </div>
+
+    <!-- 编辑器 -->
+    <div id="editor" class="overlay hidden">
+      <div class="panel editor-panel">
+        <div class="panel-head">
+          <h2>🧬 生物编辑器</h2>
+          <span id="ed-goal" class="chip"></span>
+          <span class="panel-spacer"></span>
+          <span id="ed-growth" class="chip good"></span>
+          <span id="ed-vol" class="chip"></span>
+          <button id="ed-close" class="ghost">✕</button>
+        </div>
+        <div class="tabs">
+          <button id="tab-morph" class="tab active">形态模块</button>
+          <button id="tab-network" class="tab">内部物流</button>
+        </div>
+        <div id="ed-morph" class="ed-body">
+          <div class="net-hint">左：组件库（点击查看属性并安装）· 中：生物预览 · 右：当前属性 + 组件属性。<b>⬆ 强化=属性提升</b>；<b>管线吞吐只在「内部物流」页扩容</b>；<b>🧬 = 先天器官</b>（与生俱来，可强化不可卸载）。</div>
+          <div class="morph-cols">
+            <div class="morph-left">
+              <div class="col-title">已安装</div>
+              <div id="ed-installed" class="installed"></div>
+              <div class="col-title">组件库</div>
+              <div id="ed-library" class="library"></div>
+            </div>
+            <div class="morph-mid">
+              <canvas id="ed-preview" width="430" height="430"></canvas>
+              <div id="ed-preview-info" class="preview-info"></div>
+            </div>
+            <div class="morph-right">
+              <div class="col-title">当前属性（含本次修改）</div>
+              <div id="ed-stats" class="stat-list"></div>
+              <div class="col-title">组件属性</div>
+              <div id="ed-comp" class="comp-detail"></div>
+            </div>
+          </div>
+        </div>
+        <div id="ed-network" class="ed-body hidden">
+          <div class="net-hint">物流系统分 <b>消化 / 循环 / 神经 / 运动</b> 四层，随物种复杂度逐层解锁。<b>安装带节点的器官即自动接入所属层</b>（虚线+旋转外环），你只需加支线、扩容或拆除。管线上的亮点 = 物流流动，线宽 = 吞吐等级；橙色虚线 = 瓶颈，悬停可查看吞吐。</div>
+          <div class="net-stats" id="net-stats"></div>
+          <canvas id="net-canvas" width="1100" height="640"></canvas>
+          <div id="net-pipeops" class="hidden">
+            <button id="pipe-up" class="primary">扩容（仅吞吐）</button>
+            <button id="pipe-del" class="danger">✕ 拆除</button>
+          </div>
+        </div>
+        <div class="panel-foot">
+          <span id="ed-pressure" class="chip"></span>
+          <span class="panel-spacer"></span>
+          <button id="ed-cancel" class="ghost">取消</button>
+          <button id="ed-save" class="primary">保存并退出 (Tab)</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 记忆库 -->
+    <div id="memory" class="overlay hidden">
+      <div class="panel">
+        <div class="panel-head"><h2>🧠 记忆库</h2><span class="panel-spacer"></span>
+          <button id="mem-close" class="ghost">✕</button></div>
+        <div id="mem-grid" class="mem-grid"></div>
+      </div>
+    </div>
+
+    <!-- 纪元面板 -->
+    <div id="era-panel" class="overlay hidden">
+      <div class="panel">
+        <div class="panel-head"><h2>🎯 纪元目标</h2><span class="panel-spacer"></span>
+          <button id="era-close" class="ghost">✕</button></div>
+        <div id="era-body"></div>
+      </div>
+    </div>
+
+    <!-- 主菜单 -->
+    <div id="menu" class="overlay">
+      <div class="menu-box">
+        <h1>孢子工厂冒险</h1>
+        <p class="sub">Spore 式进化 × Factorio 式体内物流 × 五感认知</p>
+        <p class="desc">吃 → 长 → 编辑 → 推进纪元。三纪元验证版：太古宙 → 元古宙 → 寒武纪。</p>
+        <button id="menu-start" class="primary big">▶ 开始进化</button>
+        <div id="bloodline-info" class="bloodline"></div>
+        <div class="keys">WASD/方向键 移动 · Tab 编辑器 · 空格 冲刺</div>
+        <div class="keys" style="margin-top:6px;opacity:.75">同类器官互斥：口沟→口器→尖牙、膜→细胞壁→外骨骼——装高位自动顶低位</div>
+      </div>
+    </div>
+
+    <!-- 开局设置 -->
+    <div id="setup" class="overlay hidden">
+      <div class="menu-box setup-box">
+        <h2>🧬 初始状态</h2>
+        <div id="diff-btns" class="diff-btns"></div>
+        <div class="setup-grid">
+          <label>食物密度 <output id="out-foodMult">×1.0</output><input type="range" min="0.4" max="2" step="0.1" value="1" data-key="foodMult"></label>
+          <label>灾害频率 <output id="out-hazardMult">×1.0</output><input type="range" min="0.3" max="2.2" step="0.1" value="1" data-key="hazardMult"></label>
+          <label>敌对生物密度 <output id="out-predMult">×1.0</output><input type="range" min="0" max="2.5" step="0.1" value="1" data-key="predMult"></label>
+          <label>敌对生物强度 <output id="out-predPower">×1.0</output><input type="range" min="0.7" max="1.5" step="0.05" value="1" data-key="predPower"></label>
+          <label>生长速度 <output id="out-growthMult">×1.0</output><input type="range" min="0.5" max="2" step="0.1" value="1" data-key="growthMult"></label>
+          <label>初始生长储备 <output id="out-startGrowth">0</output><input type="range" min="0" max="60" step="5" value="0" data-key="startGrowth"></label>
+        </div>
+        <div class="setup-actions">
+          <button id="setup-back" class="ghost">← 返回</button>
+          <button id="setup-start" class="primary big">🧬 开始进化</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 死亡结算 -->
+    <div id="death" class="overlay hidden">
+      <div class="menu-box">
+        <h1 id="death-title">💀 个体死亡</h1>
+        <p class="sub" id="death-sub">血统仍在延续</p>
+        <div id="death-stats" class="death-stats"></div>
+        <div id="death-analytics" class="death-stats"></div>
+        <button id="death-restart" class="primary big">🧬 以子代重启（记忆 60% 遗传）</button>
+      </div>
+    </div>
+
+    <!-- 通关结算（三纪元闭环） -->
+    <div id="victory" class="overlay hidden">
+      <div class="menu-box victory-box">
+        <h1 class="victory-title">🏆 三纪元闭环</h1>
+        <p class="sub">从单细胞到外骨骼——你完成了生命的第一次伟大飞跃</p>
+        <div id="victory-score" class="victory-score"></div>
+        <div id="victory-breakdown" class="death-stats"></div>
+        <div id="victory-stats" class="death-stats"></div>
+        <button id="victory-restart" class="primary big">🧬 开启新血统（记忆 60% 遗传）</button>
+        <p class="keys" style="margin-top:8px">血统记忆将带入下一代，基因库永久扩张</p>
+      </div>
+    </div>
+
+    <!-- 纪元过场 -->
+    <div id="era-splash" class="overlay hidden">
+      <div class="splash">
+        <div id="splash-era" class="splash-era"></div>
+        <div id="splash-event" class="splash-event"></div>
+        <div id="splash-inherit" class="splash-inherit"></div>
+      </div>
+    </div>
+
+    <div id="toasts"></div>
+    <div id="taste-card" class="hidden"></div>
+  </div>
+  <script type="module" src="/src/main.ts"></script>
+</body>
+</html>

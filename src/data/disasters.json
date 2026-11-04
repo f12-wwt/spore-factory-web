@@ -1,0 +1,104 @@
+[
+  {
+    "id": "hydrothermal_vent",
+    "era": 0,
+    "trigger": "random",
+    "warningTime": 20,
+    "duration": 15,
+    "recover": 15,
+    "radius": 260,
+    "zoneDps": 6,
+    "globalDps": 0,
+    "counterModules": [],
+    "effects": [
+      { "type": "temperature", "value": 20 },
+      { "type": "speed", "value": -0.5 }
+    ],
+    "survivalStrategy": "远离热泉喷口，或进化耐热体质"
+  },
+  {
+    "id": "great_oxidation",
+    "era": 1,
+    "trigger": "scripted",
+    "warningTime": 25,
+    "duration": 25,
+    "recover": 15,
+    "radius": 0,
+    "zoneDps": 0,
+    "globalDps": 1.4,
+    "counterModules": ["aerogenase"],
+    "effects": [
+      { "type": "oxygen", "value": 1 },
+      { "type": "damage", "value": 1.4 }
+    ],
+    "survivalStrategy": "进化有氧酶（有氧酶免疫），或提前储备生命值硬抗"
+  },
+  {
+    "id": "ocean_acidification",
+    "era": 2,
+    "trigger": "random",
+    "warningTime": 20,
+    "duration": 25,
+    "recover": 15,
+    "radius": 0,
+    "zoneDps": 0,
+    "globalDps": 1.2,
+    "counterModules": ["exoskeleton", "gill"],
+    "effects": [
+      { "type": "acid", "value": 1 },
+      { "type": "damage", "value": 1.2 }
+    ],
+    "survivalStrategy": "外骨骼或原始鳃可大幅降低酸蚀伤害"
+  },
+  {
+    "id": "vent_storm",
+    "era": 0,
+    "trigger": "scripted",
+    "warningTime": 25,
+    "duration": 30,
+    "recover": 10,
+    "radius": 0,
+    "zoneDps": 8,
+    "globalDps": 0,
+    "counterModules": [],
+    "effects": [
+      { "type": "temperature", "value": 25 },
+      { "type": "speed", "value": -0.7 }
+    ],
+    "survivalStrategy": "寻找深海暗流或进化耐热体质"
+  },
+  {
+    "id": "hypoxia_zone",
+    "era": 1,
+    "trigger": "random",
+    "warningTime": 20,
+    "duration": 20,
+    "recover": 8,
+    "radius": 200,
+    "zoneDps": 5,
+    "globalDps": 1.6,
+    "counterModules": ["gill", "aerogenase"],
+    "effects": [
+      { "type": "oxygen", "value": 0.4 },
+      { "type": "damage", "value": 1.8 }
+    ],
+    "survivalStrategy": "缺氧环境下强化鳃或发展厌氧代谢"
+  },
+  {
+    "id": "deep_erosion",
+    "era": 2,
+    "trigger": "random",
+    "warningTime": 15,
+    "duration": 30,
+    "recover": 10,
+    "radius": 280,
+    "zoneDps": 7,
+    "globalDps": 1.0,
+    "counterModules": ["exoskeleton", "gill"],
+    "effects": [
+      { "type": "acid", "value": 1.5 },
+      { "type": "damage", "value": 2.5 }
+    ],
+    "survivalStrategy": "厚甲壳或原始鳃可大幅降低酸蚀伤害"
+  }
+]
