@@ -258,11 +258,11 @@ export function report(ps: Profile[] = profileAll(), issues = audit(ps)): string
   const f = (n: number, d = 1): string => (Number.isFinite(n) ? n.toFixed(d) : '∞');
   const L: string[] = [];
   L.push('═'.repeat(118));
-  L.push('孢子工厂冒险 · 平衡报表'.padEnd(60) + `探针：${ps.length} 种形态`);
+  L.push(`${'孢子工厂冒险 · 平衡报表'.padEnd(60)}探针：${ps.length} 种形态`);
   L.push('═'.repeat(118));
   L.push('');
   L.push('【代谢】');
-  L.push('形态'.padEnd(20) + 'E  体积'.padEnd(11) + '产出P'.padEnd(9) + '总消耗'.padEnd(9) + '压力'.padEnd(8) + '档位'.padEnd(10) + '饿死'.padEnd(8) + '胃容'.padEnd(8) + '消化速率');
+  L.push(`${'形态'.padEnd(20)}${'E  体积'.padEnd(11)}${'产出P'.padEnd(9)}${'总消耗'.padEnd(9)}${'压力'.padEnd(8)}${'档位'.padEnd(10)}${'饿死'.padEnd(8)}${'胃容'.padEnd(8)}消化速率`);
   for (const p of ps) {
     L.push(
       p.build.padEnd(18) + ` E${p.era} ` +
@@ -278,7 +278,7 @@ export function report(ps: Profile[] = profileAll(), issues = audit(ps)): string
   }
   L.push('');
   L.push('【战斗】');
-  L.push('形态'.padEnd(20) + 'HP'.padEnd(9) + '护甲'.padEnd(9) + '减伤'.padEnd(8) + '攻击'.padEnd(8) + 'DPS'.padEnd(9) + '杀中立'.padEnd(9) + '杀捕食'.padEnd(9) + '抗捕食'.padEnd(9) + '速度');
+  L.push(`${'形态'.padEnd(20)}${'HP'.padEnd(9)}${'护甲'.padEnd(9)}${'减伤'.padEnd(8)}${'攻击'.padEnd(8)}${'DPS'.padEnd(9)}${'杀中立'.padEnd(9)}${'杀捕食'.padEnd(9)}${'抗捕食'.padEnd(9)}速度`);
   for (const p of ps) {
     L.push(
       p.build.padEnd(18) + ' ' +
@@ -295,7 +295,7 @@ export function report(ps: Profile[] = profileAll(), issues = audit(ps)): string
   }
   L.push('');
   L.push('【生态对照】');
-  L.push('纪元'.padEnd(12) + '物种'.padEnd(14) + 'HP'.padEnd(7) + '护甲'.padEnd(7) + '攻击'.padEnd(7) + '速度'.padEnd(7) + '营养');
+  L.push(`${'纪元'.padEnd(12)}${'物种'.padEnd(14)}${'HP'.padEnd(7)}${'护甲'.padEnd(7)}${'攻击'.padEnd(7)}${'速度'.padEnd(7)}营养`);
   for (const s of DataStore.speciesList) {
     L.push(
       DataStore.era(s.era).name.padEnd(12) +
@@ -324,7 +324,7 @@ export function report(ps: Profile[] = profileAll(), issues = audit(ps)): string
 export function economyReport(): string {
   const L: string[] = [];
   L.push('【经济】觅食节奏模拟（每 15 秒吃 1 口标准食物 + 每 45 秒击杀 1 只中立）');
-  L.push('难度'.padEnd(12) + '食物营养'.padEnd(12) + '15分钟储备'.padEnd(14) + '可购器官'.padEnd(14) + '纪元模块均价');
+  L.push(`${'难度'.padEnd(12)}${'食物营养'.padEnd(12)}${'15分钟储备'.padEnd(14)}${'可购器官'.padEnd(14)}纪元模块均价`);
   const food = DataStore.speciesList.find(s => s.type === 'food')!;
   for (const d of Object.values(DIFF_PRESETS)) {
     // 900s / 15s = 60 口食物；900/45 = 20 次击杀
@@ -345,7 +345,7 @@ export function economyReport(): string {
   }
   L.push('');
   L.push('【强化经济】把储备投入强化的收益（单个太古宙器官 Lv1→Lv5）');
-  L.push('难度'.padEnd(12) + '15分钟储备'.padEnd(14) + '强化到Lv5'.padEnd(14) + '可强化器官'.padEnd(14) + '产出增益');
+  L.push(`${'难度'.padEnd(12)}${'15分钟储备'.padEnd(14)}${'强化到Lv5'.padEnd(14)}${'可强化器官'.padEnd(14)}产出增益`);
   const upCost5 = (m: ModuleDefLike): number => {
     let s = 0;
     for (let i = 1; i < CONST.UP_MAX_LEVEL; i++) s += Math.round(m.growthCost * CONST.UP_COST_RATIO * i);

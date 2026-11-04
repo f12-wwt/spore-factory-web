@@ -45,6 +45,8 @@ export default defineConfig({
   },
   build: {
     outDir: 'dist',
+    // Phaser 引擎单包约 1.19 MB 属预期体积（已按需动态导入独立分包），提高告警阈值避免噪音
+    chunkSizeWarningLimit: 1300,
     // Phaser 独立分包：菜单/引擎代码可长期缓存，首屏只下载自己的代码。
     // Vite 8 / Rolldown 要求 manualChunks 为函数（对象写法已废弃）。
     rollupOptions: {

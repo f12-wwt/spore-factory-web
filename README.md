@@ -2,20 +2,20 @@
 
 根据《GDD_孢子工厂冒险.md》（v0.3-web-ai）实现的可玩验证版：**吃 → 长 → 编辑 → 推进纪元**。
 
-技术栈：Vite + TypeScript + Phaser 3 + DOM UI，数据驱动（五张 JSON 配置表），本地 localStorage 存档。
+技术栈：Vite 8 + TypeScript + Phaser 3 + 原生 DOM UI，数据驱动（五张 JSON 配置表），本地 localStorage 存档，GitHub Pages 自动部署。
 
 ## 一键启动
 
-**双击 `启动游戏.bat`**（或 `StartGame.bat`）——自动安装依赖（仅首次）并启动游戏，浏览器自动打开 http://localhost:5173。
+线上版本：https://f12-wwt.github.io/spore-factory-web/ （推送 `main` 后由 GitHub Actions 自动构建部署）
 
-手动方式：
+本地开发：
 
 ```bash
 npm install        # 仅首次
 npm run dev        # 开发模式 http://localhost:5173
-npm test           # Vitest 单测（136 项：核心/物流 34 + 存档 9 + 体积 7 + 接触判定 6 + 代谢出路 8 + 压力口径 6 + 平衡基线 23 + 器官槽位 33 + 环境分区 10）
-npm run lint       # Biome 静态检查（src + tests）
-npm run build      # 生产构建 → dist/（Phaser 独立分包，可部署 GitHub Pages / Vercel）
+npm test           # Vitest 单测（160 项，含 5 项安全回归：存档污染 / HTML 转义）
+npm run lint       # Biome 静态检查（src + tests，零告警）
+npm run build      # 生产构建 → dist/（注入 CSP meta；Phaser 独立分包）
 npm run preview    # 预览生产构建
 ```
 
@@ -173,7 +173,7 @@ npm run preview    # 预览生产构建
 ├─ index.html            入口与 DOM UI 骨架
 ├─ src/
 │  ├─ main.ts            装配：状态→Phaser→UI→事件接线
-│  ├─ core/              EventBus / GameState / MathUtils
+│  ├─ core/              EventBus / GameState / MathUtils / escape（统一 HTML 转义）
 │  ├─ types/             Module / Era / Memory / Snapshot / GameState
 │  ├─ data/              modules.json / eras.json / disasters.json / species.json
 │  ├─ systems/           代谢/物流/世界/AI/战斗/记忆/灾害/纪元/存档/埋点/平衡探针
@@ -183,15 +183,37 @@ npm run preview    # 预览生产构建
 │  ├─ core.test.ts       核心公式单测（压力表/护甲/物流/里程碑/继承/数据完整性）
 │  ├─ save.test.ts       存档往返/损坏回退/死亡血统遗传/开局生命公式
 │  └─ volume.test.ts     体积机制（不随时间增长/强化扩仓/进化跳档）
+├─ public/               favicon.svg / _headers（迁移用响应头配置）
+├─ tests/security.test.ts 安全回归：存档污染 / HTML 转义
+├─ SECURITY.md           漏洞披露方式
+├─ LICENSE               MIT（按常见默认补齐）
 └─ biome.json            Biome lint 配置（npm run lint）
 ```
 
 ## 实测验证（浏览器自动化记录）
 
-> 下列为开发期通过浏览器自动化完成的一次性验收结论；自动化脚本未随仓库提供，日常回归以 `npm test`（Vitest 126 项）+ `npm run lint` + `npm run build` 为准。
+> 下列为开发期通过浏览器自动化完成的一次性验收结论；自动化脚本未随仓库提供，日常回归以 `npm test`（Vitest 160 项）+ `npm run lint` + `npm run build` 为准。
 
 - ✅ 全核心闭环：进食→生长储备→里程碑→编辑器自动弹出→装关键模块连进两纪元→外骨骼通关结算
 - ✅ 大氧化全阶段：预警倒计时→爆发掉血→平息幸存闩锁（与里程碑联动）
 - ✅ 保存语义：装什么存什么（含下纪元模块），不装关键模块留守本纪元、不回收退款
 - ✅ 认知门控、纪元过渡继承、死亡血统延续、物流连线/扩容/瓶颈
-- ✅ TypeScript 零错误 · Vitest 136/136 · Biome 零告警 · 生产构建成功 · 控制台零报错
+- ✅ TypeScript 零错误 · Vitest 160/160 · Biome 零告警 · 生产构建成功 · 控制台零报错
+
+## 安全设计与检查
+
+线上版本在 2026-11-04 完成安全加固，完整记录见工作区 `安全检查报告.md`。
+
+| 项 | 实现 |
+|----|------|
+| 内容安全策略 | `vite.config.ts` 的 `cspMeta()` 仅在生产构建把 CSP 注入 `<head>` 最前；`script-src 'self'` 禁止内联脚本与行内事件处理器；`object-src` / `base-uri` / `form-action` 收紧 |
+| 引用策略 | `no-referrer` |
+| 开发调试桥 | `window.SFW` 仅在 `import.meta.env.DEV` 下挂载，生产构建静态消除 |
+| HTML 输出 | `src/core/escape.ts` 统一转义，UI 层承载文本的动态插值均经 `esc()` |
+| 存档安全 | `SaveSystem` 白名单过滤记忆 id、校验代数/版本/快照数量、逐字段清洗统计；`newRun` 跳过未知 id |
+| 依赖与发布 | Vite 8.3.5 / Vitest 5.1.0（`npm audit` 0 漏洞）；CI 固定 Action 提交 SHA，执行 lint / test / build 门禁 |
+| 仓库设置 | 密钥扫描、推送保护、Dependabot 安全更新、`main` 分支保护均已开启 |
+
+`style-src` 保留 `'unsafe-inline'`：DOM UI 依赖行内 style 属性与 CSSOM 动态设置，该指令不赋予脚本执行能力。
+
+**平台限制**：GitHub Pages 不支持自定义响应头，`X-Content-Type-Options` / `X-Frame-Options` / `Permissions-Policy` 无法在该平台下发。仓库提供 `public/_headers`（Cloudflare Pages / Netlify 格式），迁移到支持自定义响应头的托管平台后即时生效。漏洞披露方式见 `SECURITY.md`，开源协议见 `LICENSE`。
